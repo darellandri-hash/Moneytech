@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BALLON DIRECT — Foot en direct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0A0C;
+    --bg2:#131318;
+    --lime:#D4FF3F;
+    --pink:#FF3D6E;
+    --blue:#3DA9FF;
+    --white:#F5F5F5;
+    --grey:#8A8A93;
+    --line:#242430;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--white);
+    font-family:'Inter', sans-serif;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* Ticker */
+  .ticker-wrap{
+    background:var(--lime);
+    color:#0A0A0C;
+    overflow:hidden;
+    white-space:nowrap;
+    display:flex;
+    align-items:center;
+  }
+  .ticker-label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:#0A0A0C;
+    color:var(--lime);
+    font-family:'Bebas Neue', sans-serif;
+    font-size:16px;
+    letter-spacing:2px;
+    padding:8px 16px;
+    flex-shrink:0;
+  }
+  .ticker-label .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--pink);
+    animation:pulse 1.2s infinite;
+  }
+  .ticker-track{
+    display:inline-block;
+    padding-left:100%;
+    animation: scroll-left 40s linear infinite;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:700;
+    font-size:13px;
+    padding-top:8px;
+    padding-bottom:8px;
+  }
+  .ticker-track span{margin-right:44px;}
+  @keyframes scroll-left{
+    0%{transform:translateX(0);}
+    100%{transform:translateX(-100%);}
+  }
+  @keyframes pulse{
+    0%,100%{opacity:1; transform:scale(1);}
+    50%{opacity:0.4; transform:scale(0.8);}
+  }
+
+  /* Masthead */
+  header.masthead{
+    max-width:1200px;
+    margin:0 auto;
+    padding:36px 24px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .masthead h1{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:64px;
+    letter-spacing:2px;
+    margin:0;
+    line-height:0.9;
+  }
+  .masthead h1 span{color:var(--lime);}
+  .masthead .meta{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--grey);
+    text-align:right;
+  }
+
+  /* Layout */
+  main{
+    max-width:1200px;
+    margin:0 auto;
+    padding:10px 24px 60px;
+  }
+
+  .section-title{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:22px;
+    letter-spacing:3px;
+    color:var(--pink);
+    margin:32px 0 18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .section-title::after{
+    content:"";
+    flex:1;
+    height:2px;
+    background:var(--line);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:16px;
+  }
+  @media (max-width:900px){
+    .grid{grid-template-columns: repeat(2, 1fr);}
+    .masthead h1{font-size:44px;}
+  }
+  @media (max-width:600px){
+    .grid{grid-template-columns: 1fr;}
+  }
+
+  .card{
+    background:var(--bg2);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+  }
+  .card:hover{
+    transform:translateY(-3px);
+    border-color:var(--lime);
+  }
+  .card .tag-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px;
+  }
+  .card .source{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    color:var(--bg);
+    background:var(--blue);
+    padding:3px 8px;
+    border-radius:4px;
+  }
+  .card .time{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--grey);
+  }
+  .card h3{
+    font-family:'Inter', sans-serif;
+    font-weight:700;
+    font-size:17px;
+    line-height:1.3;
+    margin:0 0 8px;
+  }
+  .card:hover h3{color:var(--lime);}
+  .card p{
+    font-size:13px;
+    line-height:1.5;
+    color:var(--grey);
+    margin:0;
+  }
+
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap:16px;
+  }
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+  .hero-card{
+    background:linear-gradient(160deg, var(--bg2), #1a1a22);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:28px;
+  }
+  .hero-card h3{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:32px;
+    letter-spacing:0.5px;
+    line-height:1.1;
+    margin:12px 0 10px;
+  }
+  .hero-card:hover h3{color:var(--lime);}
+  .hero-card p{
+    font-size:14px;
+    color:var(--grey);
+    line-height:1.6;
+  }
+  .hero-side{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .status{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--grey);
+    text-align:center;
+    padding:30px;
+    grid-column:1/-1;
+  }
+
+  footer{
+    max-width:1200px;
+    margin:0 auto;
+    padding:20px 24px 50px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--grey);
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker-wrap">
+  <span class="ticker-label"><span class="dot"></span>LIVE</span>
+  <span class="ticker-track" id="ticker"><span>Chargement des dernières actus…</span></span>
+</div>
+
+<header class="masthead">
+  <h1>BALLON<span>DIRECT</span></h1>
+  <div class="meta" id="last-update">DERNIÈRE MAJ : —</div>
+</header>
+
+<main>
+  <div class="section-title">À LA UNE</div>
+  <div class="hero-grid" id="hero-articles">
+    <div class="status">Chargement des articles…</div>
+  </div>
+
+  <div class="section-title">TOUTES LES ACTUS</div>
+  <div class="grid" id="river-articles">
+    <div class="status">Chargement…</div>
+  </div>
+</main>
+
+<footer>
+  SOURCES AGRÉGÉES VIA FLUX RSS PUBLICS · ACTUALISATION AUTO TOUTES LES 3 MIN · CLIC = SITE D'ORIGINE
+</footer>
+
+<script>
+const FEEDS = [
+  { name: "L'Équipe", url: "https://dwh.lequipe.fr/api/edito/rss?path=/Football" },
+  { name: "RMC Sport", url: "https://rmcsport.bfmtv.com/rss/football/" },
+  { name: "Foot Mercato", url: "https://www.footmercato.net/rss" },
+  { name: "Eurosport", url: "https://www.eurosport.fr/rss.xml" }
+];
+
+// Proxy CORS qui renvoie le XML brut (plus fiable qu'un service de conversion tiers)
+const PROXY = "https://api.allorigins.win/raw?url=";
+
+let allItems = [];
+
+function stripHtml(str){
+  return (str || "").replace(/<!\[CDATA\[|\]\]>/g,"").replace(/<[^>]*>/g,"").trim();
+}
+
+async function fetchFeed(feed){
+  try{
+    const res = await fetch(PROXY + encodeURIComponent(feed.url));
+    const text = await res.text();
+    const xml = new DOMParser().parseFromString(text, "application/xml");
+    const items = Array.from(xml.querySelectorAll("item")).slice(0, 10);
+    return items.map(item => {
+      const title = stripHtml(item.querySelector("title")?.textContent);
+      const link = item.querySelector("link")?.textContent?.trim();
+      const pubDateRaw = item.querySelector("pubDate")?.textContent;
+      const description = stripHtml(item.querySelector("description")?.textContent).slice(0,120);
+      const pubDate = pubDateRaw ? new Date(pubDateRaw) : new Date();
+      return { title, link, pubDate, source: feed.name, description };
+    }).filter(a => a.title && a.link);
+  }catch(e){
+    console.error("Erreur flux", feed.name, e);
+    return [];
+  }
+}
+
+function timeAgo(date){
+  const diffMin = Math.round((Date.now() - date.getTime())/60000);
+  if(diffMin < 1) return "à l'instant";
+  if(diffMin < 60) return `il y a ${diffMin} min`;
+  const diffH = Math.round(diffMin/60);
+  if(diffH < 24) return `il y a ${diffH} h`;
+  return date.toLocaleDateString('fr-FR');
+}
+
+function renderFallback(){
+  const hero = document.getElementById('hero-articles');
+  const river = document.getElementById('river-articles');
+  const ticker = document.getElementById('ticker');
+
+  ticker.innerHTML = '<span>Connexion aux flux en cours — les derniers articles apparaissent automatiquement dès que la source répond</span>';
+
+  hero.innerHTML = `
+    <div class="hero-card" style="cursor:default;">
+      <div class="tag-row"><span class="source">INFO</span></div>
+      <h3>En attente des flux en direct</h3>
+      <p>Les articles vont apparaître automatiquement ici dès que les sources répondent. En attendant, retrouve l'actu foot directement sur ces sites :</p>
+    </div>
+    <div class="hero-side">
+      ${FEEDS.map(f => `
+        <a class="card" href="https://${new URL(f.url).hostname}" target="_blank" rel="noopener">
+          <div class="tag-row"><span class="source">${f.name}</span></div>
+          <h3>Voir ${f.name} →</h3>
+        </a>
+      `).join('')}
+    </div>
+  `;
+  river.innerHTML = '';
+}
+
+function render(){
+  const hero = document.getElementById('hero-articles');
+  const river = document.getElementById('river-articles');
+
+  if(allItems.length === 0){
+    renderFallback();
+    return;
+  }
+
+  const sorted = [...allItems].sort((a,b) => b.pubDate - a.pubDate);
+
+  const heroTop = sorted[0];
+  const heroSide = sorted.slice(1,3);
+
+  hero.innerHTML = `
+    <a class="hero-card" href="${heroTop.link}" target="_blank" rel="noopener">
+      <div class="tag-row"><span class="source">${heroTop.source}</span><span class="time">${timeAgo(heroTop.pubDate)}</span></div>
+      <h3>${heroTop.title}</h3>
+      <p>${heroTop.description}...</p>
+    </a>
+    <div class="hero-side">
+      ${heroSide.map(a => `
+        <a class="card" href="${a.link}" target="_blank" rel="noopener">
+          <div class="tag-row"><span class="source">${a.source}</span><span class="time">${timeAgo(a.pubDate)}</span></div>
+          <h3>${a.title}</h3>
+        </a>
+      `).join('')}
+    </div>
+  `;
+
+  river.innerHTML = sorted.slice(3,21).map(a => `
+    <a class="card" href="${a.link}" target="_blank" rel="noopener">
+      <div class="tag-row"><span class="source">${a.source}</span><span class="time">${timeAgo(a.pubDate)}</span></div>
+      <h3>${a.title}</h3>
+      <p>${a.description}...</p>
+    </a>
+  `).join('');
+
+  const ticker = document.getElementById('ticker');
+  ticker.innerHTML = sorted.slice(0,12).map(a => `<span>${a.source} — ${a.title}</span>`).join('');
+
+  document.getElementById('last-update').textContent = "DERNIÈRE MAJ : " + new Date().toLocaleTimeString('fr-FR');
+}
+
+async function refreshAll(){
+  const results = await Promise.all(FEEDS.map(fetchFeed));
+  const merged = results.flat();
+  if(merged.length > 0){
+    allItems = merged;
+  }
+  render();
+}
+
+refreshAll();
+setInterval(refreshAll, 3 * 60 * 1000);
+</script>
+
+</body>
+</html>
